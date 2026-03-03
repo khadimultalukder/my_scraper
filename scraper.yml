@@ -1,0 +1,27 @@
+name: Run Daily Scraper
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Every day at 9am UTC
+  workflow_dispatch:       # Also run manually if needed
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install Playwright
+      run: playwright install chromium
+
+    - name: Run scraper
+      run: python scraper.py
